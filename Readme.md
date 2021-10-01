@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Игорь Кот](https://up.htmlacademy.ru/javascript/24/user/631113).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Кривокора](https://htmlacademy.ru/profile/krivokora).
 
 ---
 
