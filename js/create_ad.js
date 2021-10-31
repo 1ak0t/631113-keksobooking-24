@@ -22,11 +22,11 @@ const templateDescription = templateClone.querySelector('.popup__description');
 const templatePhotos = templateClone.querySelector('.popup__photos');
 const templateAvatar = templateClone.querySelector('.popup__avatar');
 
-function isNull (data, tag) {
-  if (!data) {
+function isNull (adData, tag) {
+  if (!adData) {
     return tag.style.display = 'none';
   }
-  return data;
+  return adData;
 }
 
 templateTitle.textContent = isNull(data.offer.title, templateTitle);
