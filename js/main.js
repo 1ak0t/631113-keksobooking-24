@@ -1,3 +1,3 @@
-import {getAds} from './utils/data.js';
+import {templateClone} from './create_ad.js';
 
-getAds();
+document.querySelector('#map-canvas').appendChild(templateClone);
