@@ -1,11 +1,24 @@
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_NIGHT_PRICE = 1000000;
+let minPrice = 0;
+
+const minPriceOfType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 
 const form = document.querySelector('.ad-form');
 const rooms = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
 const capacityOption = capacity.querySelectorAll('option');
+const timeIn = form.querySelector('#timein');
+const timeOut = form.querySelector('#timeout');
+const typeAd = form.querySelector('#type');
+const price = form.querySelector('#price');
 
 const onTitleChange = (evt) => {
   if (evt.target.matches('input[name="title"]')) {
@@ -28,6 +41,8 @@ const onPriceChange = (evt) => {
     const inputPrice = evt.target;
     if (inputPrice.value > MAX_NIGHT_PRICE) {
       inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
+    } else if (inputPrice.value < minPrice){
+      inputPrice.setCustomValidity(`Минимальная цена ${minPrice}`);
     } else {
       inputPrice.setCustomValidity('');
     }
@@ -58,6 +73,23 @@ const onRoomsChange = (evt) => {
   }
 };
 
+const onTimeInChange = (evt) => {
+  timeOut.value = evt.target.value;
+};
+
+const onTimeOutChange = (evt) => {
+  timeIn.value = evt.target.value;
+};
+
+const onTypeChange = (evt) => {
+  minPrice = minPriceOfType[evt.target.value];
+  price.placeholder = minPrice;
+  price.min = minPrice;
+};
+
 form.addEventListener('input', onTitleChange);
 form.addEventListener('input', onPriceChange);
 rooms.addEventListener('change', onRoomsChange);
+timeIn.addEventListener('change', onTimeInChange);
+timeOut.addEventListener('change', onTimeOutChange);
+typeAd.addEventListener('change', onTypeChange);
