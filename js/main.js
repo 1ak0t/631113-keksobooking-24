@@ -1,4 +1,4 @@
-import {templateClone} from './create_ad.js';
 import './validation_module.js';
+import './map.js';
 
-document.querySelector('#map-canvas').appendChild(templateClone);
+

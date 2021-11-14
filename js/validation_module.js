@@ -93,3 +93,5 @@ rooms.addEventListener('change', onRoomsChange);
 timeIn.addEventListener('change', onTimeInChange);
 timeOut.addEventListener('change', onTimeOutChange);
 typeAd.addEventListener('change', onTypeChange);
+
+export {form};
