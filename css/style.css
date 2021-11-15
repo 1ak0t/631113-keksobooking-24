@@ -97,6 +97,19 @@ fieldset {
 .map__filters-container {
   width: 100%;
   background-color: #000000;
+  position: relative;
+}
+
+.error-map {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  color: white;
+  top: 4px;
+  display: flex;
+  font-size: 10px;
+  padding-left: 25px;
+  background-color: #ce6c6c;
 }
 
 .map__filters {

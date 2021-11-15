@@ -94,4 +94,8 @@ timeIn.addEventListener('change', onTimeInChange);
 timeOut.addEventListener('change', onTimeOutChange);
 typeAd.addEventListener('change', onTypeChange);
 
+form.addEventListener('submit' ,(evt) => {
+  evt.preventDefault();
+});
+
 export {form};
