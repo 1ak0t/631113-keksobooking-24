@@ -96,6 +96,15 @@ typeAd.addEventListener('change', onTypeChange);
 
 form.addEventListener('submit' ,(evt) => {
   evt.preventDefault();
+  const formData = new FormData(evt.target);
+
+  fetch(
+    'https://24.javascript.pages.academy/keksobooking',
+    {
+      method: 'POST',
+      body: formData,
+    },
+  );
 });
 
 export {form};
