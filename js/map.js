@@ -10,7 +10,7 @@ function showErrorMessage(error) {
   const errorMessage = document.createElement('h2');
   const errorCode = document.createElement('p');
   errorBanner.classList.add('error-map');
-  errorMessage.textContent = "Что-то пошло не так :=( \n Мы уже работаем над этой проблемой";
+  errorMessage.textContent = 'Что-то пошло не так :=( \n Мы уже работаем над этой проблемой';
   errorCode.textContent = error;
   errorBanner.appendChild(errorMessage);
   errorBanner.appendChild(errorCode);
