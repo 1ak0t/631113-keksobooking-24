@@ -11,4 +11,18 @@ const newData = function getData(onOk, onError) {
     .catch((error) => onError(error));
 };
 
-export {newData};
+const sendForm = function sendToServer(formData, onOk, onError) {
+  return fetch('https://24.javascript.pages.academy/keksobooking',
+    {
+      method: 'POST',
+      body: formData,
+    })
+    .then((response) => {
+      if(!response) {
+        onError();
+      }
+      onOk();
+    }).catch(onError);
+};
+
+export {newData,sendForm};
