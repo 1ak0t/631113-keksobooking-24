@@ -42,7 +42,6 @@ const onTitleChange = (evt) => {
 };
 
 const onPriceChange = (evt) => {
-  if (evt.target.matches('input[name="price"]')) {
     const inputPrice = evt.target;
     if (inputPrice.value > MAX_NIGHT_PRICE) {
       inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
@@ -52,7 +51,6 @@ const onPriceChange = (evt) => {
       inputPrice.setCustomValidity('');
     }
     inputPrice.reportValidity();
-  }
 };
 
 const onRoomsChange = (evt) => {
@@ -93,7 +91,7 @@ const onTypeChange = (evt) => {
 };
 
 form.addEventListener('input', onTitleChange);
-form.addEventListener('input', onPriceChange);
+price.addEventListener('input', onPriceChange);
 rooms.addEventListener('change', onRoomsChange);
 timeIn.addEventListener('change', onTimeInChange);
 timeOut.addEventListener('change', onTimeOutChange);
@@ -103,9 +101,28 @@ reset.addEventListener('click', () => {
   setTimeout(() => {address.value = '35.68339 139.75364';}, 1);
 });
 
-const keydownEsc = (evt, closeBlockFunc) => {
+const closeSuccessBlock = (handler) => {
+  const modal = document.querySelector('.success');
+  window.removeEventListener('keydown', handler);
+  // window.removeEventListener('keydown', (evt) => keydownEsc(evt));
+  modal.remove();
+};
+
+const closeErrorBlock = (handler) => {
+  const modal = document.querySelector('.error');
+  window.removeEventListener('keydown',  handler);
+  modal.remove();
+};
+
+const keydownEscSuccess = (evt) => {
   if(evt.key === 'Escape') {
-    closeBlockFunc();
+    closeSuccessBlock(keydownEscSuccess);
+  }
+};
+
+const keydownEscError = (evt) => {
+  if(evt.key === 'Escape') {
+    closeErrorBlock(keydownEscError);
   }
 };
 
@@ -117,13 +134,9 @@ function sendFormOk() {
   form.reset();
   address.value = '35.68339 139.75364';
   const openedSuccessBlock = document.querySelector('.success');
-  const closeSuccessBlock = () => {
-    openedSuccessBlock.style.display = 'none';
-    window.removeEventListener('keydown', (evt) => keydownEsc(evt));
-    successTemplateClone.remove();
-  };
   openedSuccessBlock.addEventListener('click', closeSuccessBlock);
-  window.addEventListener('keydown', (evt) => keydownEsc(evt, closeSuccessBlock()));
+  window.addEventListener('keydown', keydownEscSuccess);
+  // window.addEventListener('keydown', (evt) => keydownEsc(evt, closeSuccessBlock()));
 }
 
 function sendFormError() {
@@ -133,14 +146,10 @@ function sendFormError() {
   body.appendChild(errorTemplateClone);
   const openedErrorBlock = document.querySelector('.error');
   const tryAgainButton = openedErrorBlock.querySelector('.error__button');
-  const closeErrorBlock = () => {
-    openedErrorBlock.style.display = 'none';
-    window.removeEventListener('keydown', (evt) => keydownEsc(evt));
-    errorTemplateClone.remove();
-  };
+
   tryAgainButton.addEventListener('click', closeErrorBlock);
   openedErrorBlock.addEventListener('click', closeErrorBlock);
-  window.addEventListener('keydown', (evt) => keydownEsc(evt, closeErrorBlock()));
+  window.addEventListener('keydown', keydownEscError);
 }
 
 form.addEventListener('submit' ,(evt) => {

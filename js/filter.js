@@ -13,48 +13,53 @@ const PRICE_TYPE = {
   high: 1000000,
 };
 
+function filterPrice(someOffer, price) {
+  if(price === 'low') {
+    return someOffer.offer.price < PRICE_TYPE.low;
+  } else if(price === 'middle') {
+    return someOffer.offer.price > PRICE_TYPE.low && someOffer.offer.price < PRICE_TYPE.middle;
+  } else if(price === 'high') {
+    return someOffer.offer.price > PRICE_TYPE.middle && someOffer.offer.price < PRICE_TYPE.high;
+  }
+  return price === 'any';
+}
+
+function filterAny(value, typeFilter) {
+  return typeFilter === value || typeFilter === 'any';
+}
+
+const isFilterFeatures = (features, filterFeatures) => features && filterFeatures.every((feature) => features.some((featureValue) => feature === featureValue));
+
 const filterData = (data) => {
   const type = housingType.value;
   const rooms = housingRooms.value;
   const guests = housingGuests.value;
   const price = housingPrice.value;
-  const features = housingFeatures.querySelectorAll('input');
-  let cloneData = data.slice();
-  if(type !== 'any') {
-    cloneData = cloneData.filter((el) => el.offer.type === type);
-  }
-  if(rooms !== 'any') {
-    cloneData = cloneData.filter((el) => el.offer.rooms.toString() === rooms);
-  }
+  const filteredData = [];
 
-  if(guests !== 'any') {
-    cloneData = cloneData.filter((el) => el.offer.guests.toString() === guests);
-  }
+  const getValueCheckboxFeatures = () => {
+    const checkboxes = housingFeatures.querySelectorAll('.map__checkbox');
+    const featuresValue = [];
+    checkboxes.forEach((element) => {
+      if (element.checked) {
+        featuresValue.push(element.value);
+      }
+    });
+    return featuresValue;
+  };
 
-  if(price === 'low') {
-    cloneData = cloneData.filter((el) => el.offer.price < PRICE_TYPE.low);
-  } else if(price === 'middle') {
-    cloneData = cloneData.filter((el) => (el.offer.price > PRICE_TYPE.low && el.offer.price < PRICE_TYPE.middle));
-  } else if(price === 'high') {
-    cloneData = cloneData.filter((el) => el.offer.price > PRICE_TYPE.middle && el.offer.price < PRICE_TYPE.high);
-  }
-
-  features.forEach((feature) => {
-    if(feature.checked) {
-      cloneData = cloneData.filter((el) => {
-        if(el.offer.features){
-          if(el.offer.features.includes(feature.value)) {
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      });
+  data.some((offer) => {
+    if(filterAny(offer.offer.type, type)
+      && filterAny(offer.offer.rooms.toString(), rooms)
+      && filterAny(offer.offer.guests.toString(), guests)
+      && filterPrice(offer, price)
+      && isFilterFeatures(offer.offer.features, getValueCheckboxFeatures())
+    ) {
+      filteredData.push(offer);
     }
+    return filteredData.length === 10;
   });
-  makePin(cloneData);
+  makePin(filteredData);
 };
 
 const setFilter = (cb) => {

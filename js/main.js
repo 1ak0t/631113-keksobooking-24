@@ -7,7 +7,7 @@ import {setFilter, filterData} from './filter.js';
 import {debounce} from './utils/debounce.js';
 
 getData((data) => {
-  makePin(data);
+  makePin(data.slice(0, 10));
   setFilter(debounce(() => filterData(data), 500));
 },showErrorMessage);
 
