@@ -1,4 +1,4 @@
-import {form} from './validation_module.js';
+import {form} from './form.js';
 
 const fieldsets = form.querySelectorAll('fieldset');
 const mapFilter = document.querySelector('.map__filters');

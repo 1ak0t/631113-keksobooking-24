@@ -34,22 +34,29 @@ function createAd(data) {
   templateCapacity.textContent = `${isNull(data.offer.rooms, templateCapacity)} комнат для ${isNull(data.offer.guests, templateCapacity)} гостей`;
   templateTime.textContent = `Заезд после ${isNull(data.offer.checkin, templateTime)}, выезд до ${isNull(data.offer.checkout, templateTime)}`;
 
-  templateFeatures.querySelectorAll('li').forEach((el) => {
-    const isFeature = data.offer.features.some((feature) => el.classList.contains(`popup__feature--${feature}`));
-    if (!isFeature) {
-      el.remove();
-    }
-  });
+
+  if(data.offer.features){
+    templateFeatures.querySelectorAll('li').forEach((el) => {
+      const isFeature = data.offer.features.some((feature) => el.classList.contains(`popup__feature--${feature}`));
+      if (!isFeature) {
+        el.remove();
+      }
+    });
+  }
 
   templateDescription.textContent = isNull(data.offer.description, templateDescription);
 
   const imgTag = templatePhotos.querySelector('img');
   imgTag.remove();
-  data.offer.photos.forEach((photo) => {
-    const photoHTML = imgTag.cloneNode();
-    photoHTML.src = photo;
-    templatePhotos.append(photoHTML);
-  });
+
+
+  if(data.offer.photos) {
+    data.offer.photos.forEach((photo) => {
+      const photoHTML = imgTag.cloneNode();
+      photoHTML.src = photo;
+      templatePhotos.append(photoHTML);
+    });
+  }
 
   templateAvatar.src = isNull(data.author.avatar, templateAvatar);
   return templateClone;

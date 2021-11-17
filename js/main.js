@@ -1,4 +1,2 @@
-import './validation_module.js';
+import './form.js';
 import './map.js';
-
-
