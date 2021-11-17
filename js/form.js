@@ -42,15 +42,15 @@ const onTitleChange = (evt) => {
 };
 
 const onPriceChange = (evt) => {
-    const inputPrice = evt.target;
-    if (inputPrice.value > MAX_NIGHT_PRICE) {
-      inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
-    } else if (inputPrice.value < minPrice){
-      inputPrice.setCustomValidity(`Минимальная цена ${minPrice}`);
-    } else {
-      inputPrice.setCustomValidity('');
-    }
-    inputPrice.reportValidity();
+  const inputPrice = evt.target;
+  if (inputPrice.value > MAX_NIGHT_PRICE) {
+    inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
+  } else if (inputPrice.value < minPrice){
+    inputPrice.setCustomValidity(`Минимальная цена ${minPrice}`);
+  } else {
+    inputPrice.setCustomValidity('');
+  }
+  inputPrice.reportValidity();
 };
 
 const onRoomsChange = (evt) => {
