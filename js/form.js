@@ -103,6 +103,12 @@ reset.addEventListener('click', () => {
   setTimeout(() => {address.value = '35.68339 139.75364';}, 1);
 });
 
+const keydownEsc = (evt, closeBlockFunc) => {
+  if(evt.key === 'Escape') {
+    closeBlockFunc();
+  }
+};
+
 function sendFormOk() {
   const successTemplate = document.querySelector('#success').content;
   const successBlock = successTemplate.querySelector('.success');
@@ -111,14 +117,13 @@ function sendFormOk() {
   form.reset();
   address.value = '35.68339 139.75364';
   const openedSuccessBlock = document.querySelector('.success');
-  openedSuccessBlock.addEventListener('click', () => {
+  const closeSuccessBlock = () => {
     openedSuccessBlock.style.display = 'none';
-  });
-  window.addEventListener('keydown', (evt) => {
-    if(evt.key === 'Escape') {
-      openedSuccessBlock.style.display = 'none';
-    }
-  });
+    window.removeEventListener('keydown', (evt) => keydownEsc(evt));
+    successTemplateClone.remove();
+  };
+  openedSuccessBlock.addEventListener('click', closeSuccessBlock);
+  window.addEventListener('keydown', (evt) => keydownEsc(evt, closeSuccessBlock()));
 }
 
 function sendFormError() {
@@ -128,17 +133,14 @@ function sendFormError() {
   body.appendChild(errorTemplateClone);
   const openedErrorBlock = document.querySelector('.error');
   const tryAgainButton = openedErrorBlock.querySelector('.error__button');
-  tryAgainButton.addEventListener('click', () => {
-    openedErrorBlock.style.display ='none';
-  });
-  openedErrorBlock.addEventListener('click', () => {
+  const closeErrorBlock = () => {
     openedErrorBlock.style.display = 'none';
-  });
-  window.addEventListener('keydown', (evt) => {
-    if(evt.key === 'Escape') {
-      openedErrorBlock.style.display = 'none';
-    }
-  });
+    window.removeEventListener('keydown', (evt) => keydownEsc(evt));
+    errorTemplateClone.remove();
+  };
+  tryAgainButton.addEventListener('click', closeErrorBlock);
+  openedErrorBlock.addEventListener('click', closeErrorBlock);
+  window.addEventListener('keydown', (evt) => keydownEsc(evt, closeErrorBlock()));
 }
 
 form.addEventListener('submit' ,(evt) => {

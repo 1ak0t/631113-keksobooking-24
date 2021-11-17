@@ -1,5 +1,4 @@
 import {activatePage, disablePage} from './page_state.js';
-import {newData} from './server_exchange.js';
 import {createAd} from './create_ad.js';
 
 const addressInput = document.getElementById('address');
@@ -57,29 +56,31 @@ mainPinMarker.on('moveend', (evt) => {
   addressInput.value = `${evt.target.getLatLng().lat.toFixed(5)} ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
+
 function makePin(data) {
-  data.forEach((el) => {
-    const pinIcon = L.icon({
-      iconUrl: '/img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
+  markerGroup.clearLayers();
+  data
+    .slice()
+    .slice(0, 10)
+    .forEach((el) => {
+      const pinIcon = L.icon({
+        iconUrl: '/img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+      const pinMarker = L.marker(
+        {
+          lat: el.location.lat,
+          lng: el.location.lng,
+        },
+        {
+          icon: pinIcon,
+        },
+      );
+      pinMarker.addTo(markerGroup).bindPopup(createAd(el));
     });
-
-    const pinMarker = L.marker(
-      {
-        lat: el.location.lat,
-        lng: el.location.lng,
-      },
-      {
-        icon: pinIcon,
-      },
-    );
-
-    pinMarker.addTo(map).bindPopup(createAd(el));
-  });
 }
-
-const ads = newData(makePin, showErrorMessage);
-
-export {ads};
+export {makePin,showErrorMessage};
 

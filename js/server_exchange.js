@@ -1,4 +1,4 @@
-const newData = function getData(onOk, onError) {
+const getData = function getData(onOk, onError) {
   return fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if(response.ok) {
@@ -25,4 +25,4 @@ const sendForm = function sendToServer(formData, onOk, onError) {
     }).catch(onError);
 };
 
-export {newData,sendForm};
+export {getData,sendForm};
