@@ -104,7 +104,6 @@ reset.addEventListener('click', () => {
 const closeSuccessBlock = (handler) => {
   const modal = document.querySelector('.success');
   window.removeEventListener('keydown', handler);
-  // window.removeEventListener('keydown', (evt) => keydownEsc(evt));
   modal.remove();
 };
 
@@ -136,7 +135,6 @@ function sendFormOk() {
   const openedSuccessBlock = document.querySelector('.success');
   openedSuccessBlock.addEventListener('click', closeSuccessBlock);
   window.addEventListener('keydown', keydownEscSuccess);
-  // window.addEventListener('keydown', (evt) => keydownEsc(evt, closeSuccessBlock()));
 }
 
 function sendFormError() {
