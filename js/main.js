@@ -1,8 +1,8 @@
-import './form.js';
+import {getData} from './server_exchange.js';
 import './map.js';
+import './form.js';
 import {makePin} from './map.js';
 import {showErrorMessage} from './map.js';
-import {getData} from './server_exchange.js';
 import {setFilter, filterData} from './filter.js';
 import {debounce} from './utils/debounce.js';
 

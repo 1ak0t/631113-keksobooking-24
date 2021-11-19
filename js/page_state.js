@@ -1,5 +1,4 @@
-import {form} from './form.js';
-
+const form = document.querySelector('.ad-form');
 const fieldsets = form.querySelectorAll('fieldset');
 const mapFilter = document.querySelector('.map__filters');
 const filters = mapFilter.childNodes;

@@ -48,8 +48,8 @@ const mainPinMarker = L.marker(
     icon: mainPinIcon,
   },
 );
-
 mainPinMarker.addTo(map);
+
 addressInput.value = `${mainPinMarker.getLatLng().lat.toFixed(5)} ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
 
 mainPinMarker.on('moveend', (evt) => {
@@ -80,5 +80,5 @@ function makePin(data) {
       pinMarker.addTo(markerGroup).bindPopup(createAd(el));
     });
 }
-export {makePin,showErrorMessage};
+export {makePin,showErrorMessage, mainPinMarker, map};
 

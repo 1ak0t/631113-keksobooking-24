@@ -1,9 +1,12 @@
-import {sendForm} from './server_exchange.js';
+import {getData, sendForm} from './server_exchange.js';
+import {map, mainPinMarker, makePin, showErrorMessage} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_NIGHT_PRICE = 1000000;
-let minPrice = 0;
+const MAP_CENTER_LAT = 35.68339;
+const MAP_CENTER_LNG = 139.75364;
+  let minPrice = 0;
 
 const minPriceOfType = {
   bungalow: 0,
@@ -90,6 +93,23 @@ const onTypeChange = (evt) => {
   price.min = minPrice;
 };
 
+function resetFilterForm() {
+  const filterForm = document.querySelector('.map__filters');;
+  filterForm.reset();
+  getData((data) => {
+    makePin(data.slice(0, 10));
+  }, showErrorMessage);
+  mainPinMarker._latlng.lat = MAP_CENTER_LAT;
+  mainPinMarker._latlng.lng = MAP_CENTER_LNG;
+  map.setZoom(13);
+  map.setView({
+    lat: 35.683390,
+    lng: 139.753637,
+  }, 13);
+};
+
+
+
 form.addEventListener('input', onTitleChange);
 price.addEventListener('input', onPriceChange);
 rooms.addEventListener('change', onRoomsChange);
@@ -98,7 +118,8 @@ timeOut.addEventListener('change', onTimeOutChange);
 typeAd.addEventListener('change', onTypeChange);
 reset.addEventListener('click', () => {
   form.reset();
-  setTimeout(() => {address.value = '35.68339 139.75364';}, 1);
+  resetFilterForm();
+  setTimeout(() => {address.value = `${MAP_CENTER_LAT} ${MAP_CENTER_LNG}`;}, 1);
 });
 
 const closeSuccessBlock = (handler) => {
