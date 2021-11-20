@@ -134,9 +134,7 @@ avatarChoose.addEventListener('change', () => {
   const file = avatarChoose.files[0];
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => {
-    return fileName.endsWith(it);
-  });
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     avatarPreview.src = URL.createObjectURL(file);
@@ -147,9 +145,7 @@ adImgChoose.addEventListener('change', (evt) => {
     const file = adImgChoose.files[i];
     const fileName = file.name.toLowerCase();
 
-    const matches = FILE_TYPES.some((it) => {
-      return fileName.endsWith(it);
-    });
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
     if (matches) {
       const adImgPreviewClone = adImgPreview.cloneNode();
