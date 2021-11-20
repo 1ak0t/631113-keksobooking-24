@@ -1,14 +1,13 @@
 import {getData, sendForm} from './server_exchange.js';
 import {map, mainPinMarker, makePin, showErrorMessage} from './map.js';
+import {MAP_CENTER_LAT, MAP_CENTER_LNG} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_NIGHT_PRICE = 1000000;
-const MAP_CENTER_LAT = 35.68339;
-const MAP_CENTER_LNG = 139.75364;
-  let minPrice = 0;
-
-const minPriceOfType = {
+const MIN_TIMEOUT = 1;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const MinPriceOfType = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -16,7 +15,8 @@ const minPriceOfType = {
   palace: 10000,
 };
 
-const body = document.querySelector('body');
+let minPrice = 0;
+const body = document.body;
 const form = document.querySelector('.ad-form');
 const rooms = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
@@ -27,8 +27,14 @@ const typeAd = form.querySelector('#type');
 const price = form.querySelector('#price');
 const address = form.querySelector('#address');
 const reset = form.querySelector('.ad-form__reset');
+const startPricePlaceholder = price.placeholder;
+const avatarChoose = form.querySelector('#avatar');
+const avatarPreview = form.querySelector('.ad-form-header__preview img');
+const adImgChoose = form.querySelector('#images');
+const adImgPreview = form.querySelector('.ad-form__photo');
+const adImgContainer = form.querySelector('.ad-form__photo-container');
 
-const onTitleChange = (evt) => {
+const onTitleInput = (evt) => {
   if (evt.target.matches('input[name="title"]')) {
     const inputTitle = evt.target;
     const titleLength = inputTitle.value.length;
@@ -44,7 +50,7 @@ const onTitleChange = (evt) => {
   }
 };
 
-const onPriceChange = (evt) => {
+const onPriceInput = (evt) => {
   const inputPrice = evt.target;
   if (inputPrice.value > MAX_NIGHT_PRICE) {
     inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
@@ -88,49 +94,86 @@ const onTimeOutChange = (evt) => {
 };
 
 const onTypeChange = (evt) => {
-  minPrice = minPriceOfType[evt.target.value];
+  minPrice = MinPriceOfType[evt.target.value];
   price.placeholder = minPrice;
   price.min = minPrice;
 };
 
 function resetFilterForm() {
-  const filterForm = document.querySelector('.map__filters');;
+  const filterForm = document.querySelector('.map__filters');
   filterForm.reset();
   getData((data) => {
     makePin(data.slice(0, 10));
   }, showErrorMessage);
-  mainPinMarker._latlng.lat = MAP_CENTER_LAT;
-  mainPinMarker._latlng.lng = MAP_CENTER_LNG;
-  map.setZoom(13);
+  mainPinMarker.setLatLng([MAP_CENTER_LAT, MAP_CENTER_LNG]);
   map.setView({
-    lat: 35.683390,
-    lng: 139.753637,
+    lat: MAP_CENTER_LAT,
+    lng: MAP_CENTER_LNG,
   }, 13);
-};
+}
+
+function resetForm() {
+  form.reset();
+  price.placeholder = startPricePlaceholder;
+  price.removeAttribute('min');
+  setTimeout(() => address.value = `${MAP_CENTER_LAT} ${MAP_CENTER_LNG}`, MIN_TIMEOUT);
+}
 
 
-
-form.addEventListener('input', onTitleChange);
-price.addEventListener('input', onPriceChange);
+form.addEventListener('input', onTitleInput);
+price.addEventListener('input', onPriceInput);
 rooms.addEventListener('change', onRoomsChange);
 timeIn.addEventListener('change', onTimeInChange);
 timeOut.addEventListener('change', onTimeOutChange);
 typeAd.addEventListener('change', onTypeChange);
 reset.addEventListener('click', () => {
-  form.reset();
+  resetForm();
   resetFilterForm();
-  setTimeout(() => {address.value = `${MAP_CENTER_LAT} ${MAP_CENTER_LNG}`;}, 1);
+});
+avatarChoose.addEventListener('change', () => {
+  const file = avatarChoose.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    avatarPreview.src = URL.createObjectURL(file);
+  }
+});
+adImgChoose.addEventListener('change', (evt) => {
+  for(let i = 0; i < evt.target.files.length; i++){
+    const file = adImgChoose.files[i];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FILE_TYPES.some((it) => {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      const adImgPreviewClone = adImgPreview.cloneNode();
+      adImgPreview.remove();
+      const photo = document.createElement('img');
+      photo.src = URL.createObjectURL(file);
+      photo.style.width = '70px';
+      photo.style.height = '70px';
+      photo.style.borderRadius = '5px';
+      adImgPreviewClone.appendChild(photo);
+      adImgContainer.appendChild(adImgPreviewClone);
+    }
+  }
 });
 
-const closeSuccessBlock = (handler) => {
+const closeSuccessBlock = (cb) => {
   const modal = document.querySelector('.success');
-  window.removeEventListener('keydown', handler);
+  window.removeEventListener('keydown', cb);
   modal.remove();
 };
 
-const closeErrorBlock = (handler) => {
+const closeErrorBlock = (cb) => {
   const modal = document.querySelector('.error');
-  window.removeEventListener('keydown',  handler);
+  window.removeEventListener('keydown',  cb);
   modal.remove();
 };
 
@@ -151,8 +194,8 @@ function sendFormOk() {
   const successBlock = successTemplate.querySelector('.success');
   const successTemplateClone = successBlock.cloneNode(true);
   body.appendChild(successTemplateClone);
-  form.reset();
-  address.value = '35.68339 139.75364';
+  resetForm();
+  resetFilterForm();
   const openedSuccessBlock = document.querySelector('.success');
   openedSuccessBlock.addEventListener('click', closeSuccessBlock);
   window.addEventListener('keydown', keydownEscSuccess);

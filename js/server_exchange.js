@@ -1,4 +1,4 @@
-const getData = function getData(onOk, onError) {
+function getData(onOk, onError) {
   return fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if(response.ok) {
@@ -9,20 +9,21 @@ const getData = function getData(onOk, onError) {
     .then((response) => response.json())
     .then((data) => onOk(data))
     .catch((error) => onError(error));
-};
+}
 
-const sendForm = function sendToServer(formData, onOk, onError) {
+function sendForm(formData, onOk, onError) {
   return fetch('https://24.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
       body: formData,
     })
     .then((response) => {
-      if(!response) {
+      if(response && response.ok) {
+        onOk();
+      } else {
         onError();
       }
-      onOk();
     }).catch(onError);
-};
+}
 
 export {getData,sendForm};

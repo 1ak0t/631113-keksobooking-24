@@ -1,13 +1,13 @@
 function createAd(data) {
-  const adTemplate = document.querySelector('#card').content;
-  const popup = adTemplate.querySelector('article');
-  const offerType = {
+  const OfferType = {
     palace: 'Дворец',
     flat: 'Квартира',
     house: 'Дом',
     bungalow: 'Бунгало',
     hotel: 'Отель',
   };
+  const adTemplate = document.querySelector('#card').content;
+  const popup = adTemplate.querySelector('article');
   const templateClone = popup.cloneNode(true);
   const templateTitle = templateClone.querySelector('.popup__title');
   const templateAddress = templateClone.querySelector('.popup__text--address');
@@ -22,7 +22,8 @@ function createAd(data) {
 
   function isNull (adData, tag) {
     if (!adData) {
-      return tag.style.display = 'none';
+      const tagInvisible = tag.style.display = 'none';
+      return tagInvisible;
     }
     return adData;
   }
@@ -30,7 +31,7 @@ function createAd(data) {
   templateTitle.textContent = isNull(data.offer.title, templateTitle);
   templateAddress.textContent = isNull(data.offer.address, templateAddress);
   templatePrice.textContent = `${isNull(data.offer.price, templatePrice)} ₽/ночь`;
-  templateType.textContent = isNull(offerType[data.offer.type], templateType);
+  templateType.textContent = isNull(OfferType[data.offer.type], templateType);
   templateCapacity.textContent = `${isNull(data.offer.rooms, templateCapacity)} комнат для ${isNull(data.offer.guests, templateCapacity)} гостей`;
   templateTime.textContent = `Заезд после ${isNull(data.offer.checkin, templateTime)}, выезд до ${isNull(data.offer.checkout, templateTime)}`;
 

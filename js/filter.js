@@ -1,5 +1,12 @@
 import {makePin} from './map.js';
 
+const MAX_NUMBER_OF_PINS = 10;
+const PriceType = {
+  low: 10000,
+  middle: 50000,
+  high: 1000000,
+};
+
 const filterForm = document.querySelector('.map__filters');
 const housingType = filterForm.querySelector('#housing-type');
 const housingPrice = filterForm.querySelector('#housing-price');
@@ -7,19 +14,13 @@ const housingRooms = filterForm.querySelector('#housing-rooms');
 const housingGuests = filterForm.querySelector('#housing-guests');
 const housingFeatures = filterForm.querySelector('#housing-features');
 
-const PRICE_TYPE = {
-  low: 10000,
-  middle: 50000,
-  high: 1000000,
-};
-
 function filterPrice(someOffer, price) {
   if(price === 'low') {
-    return someOffer.offer.price < PRICE_TYPE.low;
+    return someOffer.offer.price < PriceType.low;
   } else if(price === 'middle') {
-    return someOffer.offer.price > PRICE_TYPE.low && someOffer.offer.price < PRICE_TYPE.middle;
+    return someOffer.offer.price > PriceType.low && someOffer.offer.price < PriceType.middle;
   } else if(price === 'high') {
-    return someOffer.offer.price > PRICE_TYPE.middle && someOffer.offer.price < PRICE_TYPE.high;
+    return someOffer.offer.price > PriceType.middle && someOffer.offer.price < PriceType.high;
   }
   return price === 'any';
 }
@@ -39,13 +40,13 @@ const filterData = (data) => {
 
   const getValueCheckboxFeatures = () => {
     const checkboxes = housingFeatures.querySelectorAll('.map__checkbox');
-    const featuresValue = [];
+    const featuresValues = [];
     checkboxes.forEach((element) => {
       if (element.checked) {
-        featuresValue.push(element.value);
+        featuresValues.push(element.value);
       }
     });
-    return featuresValue;
+    return featuresValues;
   };
 
   data.some((offer) => {
@@ -57,7 +58,7 @@ const filterData = (data) => {
     ) {
       filteredData.push(offer);
     }
-    return filteredData.length === 10;
+    return filteredData.length === MAX_NUMBER_OF_PINS;
   });
   makePin(filteredData);
 };
