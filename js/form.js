@@ -15,7 +15,6 @@ const MinPriceOfType = {
   palace: 10000,
 };
 
-let minPrice = 0;
 const body = document.body;
 const form = document.querySelector('.ad-form');
 const rooms = form.querySelector('#room_number');
@@ -27,14 +26,16 @@ const typeAd = form.querySelector('#type');
 const price = form.querySelector('#price');
 const address = form.querySelector('#address');
 const reset = form.querySelector('.ad-form__reset');
-const startPricePlaceholder = price.placeholder;
 const avatarChoose = form.querySelector('#avatar');
 const avatarPreview = form.querySelector('.ad-form-header__preview img');
 const adImgChoose = form.querySelector('#images');
 const adImgPreview = form.querySelector('.ad-form__photo');
 const adImgContainer = form.querySelector('.ad-form__photo-container');
 
-const onTitleInput = (evt) => {
+let minPrice = 1000;
+price.min = minPrice;
+
+function onTitleInput(evt) {
   if (evt.target.matches('input[name="title"]')) {
     const inputTitle = evt.target;
     const titleLength = inputTitle.value.length;
@@ -48,9 +49,9 @@ const onTitleInput = (evt) => {
     }
     inputTitle.reportValidity();
   }
-};
+}
 
-const onPriceInput = (evt) => {
+function onPriceInput(evt){
   const inputPrice = evt.target;
   if (inputPrice.value > MAX_NIGHT_PRICE) {
     inputPrice.setCustomValidity('Максимальная цена за ночь - 1 000 000');
@@ -60,9 +61,9 @@ const onPriceInput = (evt) => {
     inputPrice.setCustomValidity('');
   }
   inputPrice.reportValidity();
-};
+}
 
-const onRoomsChange = (evt) => {
+function onRoomsChange(evt) {
   capacityOption.forEach((option) => option.disabled = true);
   if (evt.target.value === '1') {
     capacityOption[2].disabled = false;
@@ -83,21 +84,21 @@ const onRoomsChange = (evt) => {
     capacityOption[3].disabled = false;
     capacity.value = '0';
   }
-};
+}
 
-const onTimeInChange = (evt) => {
+function onTimeInChange(evt) {
   timeOut.value = evt.target.value;
-};
+}
 
-const onTimeOutChange = (evt) => {
+function onTimeOutChange(evt) {
   timeIn.value = evt.target.value;
-};
+}
 
-const onTypeChange = (evt) => {
+function onTypeChange(evt) {
   minPrice = MinPriceOfType[evt.target.value];
   price.placeholder = minPrice;
   price.min = minPrice;
-};
+}
 
 function resetFilterForm() {
   const filterForm = document.querySelector('.map__filters');
@@ -114,8 +115,9 @@ function resetFilterForm() {
 
 function resetForm() {
   form.reset();
-  price.placeholder = startPricePlaceholder;
-  price.removeAttribute('min');
+  minPrice = 1000;
+  price.placeholder = minPrice;
+  price.min = minPrice;
   setTimeout(() => address.value = `${MAP_CENTER_LAT} ${MAP_CENTER_LNG}`, MIN_TIMEOUT);
 }
 
@@ -161,29 +163,29 @@ adImgChoose.addEventListener('change', (evt) => {
   }
 });
 
-const closeSuccessBlock = (cb) => {
+function closeSuccessBlock(cb) {
   const modal = document.querySelector('.success');
   window.removeEventListener('keydown', cb);
   modal.remove();
-};
+}
 
-const closeErrorBlock = (cb) => {
+function closeErrorBlock(cb) {
   const modal = document.querySelector('.error');
   window.removeEventListener('keydown',  cb);
   modal.remove();
-};
+}
 
-const keydownEscSuccess = (evt) => {
+function keydownEscSuccess(evt) {
   if(evt.key === 'Escape') {
     closeSuccessBlock(keydownEscSuccess);
   }
-};
+}
 
-const keydownEscError = (evt) => {
+function keydownEscError(evt) {
   if(evt.key === 'Escape') {
     closeErrorBlock(keydownEscError);
   }
-};
+}
 
 function sendFormOk() {
   const successTemplate = document.querySelector('#success').content;

@@ -1,11 +1,12 @@
+const OfferType = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
 function createAd(data) {
-  const OfferType = {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalow: 'Бунгало',
-    hotel: 'Отель',
-  };
   const adTemplate = document.querySelector('#card').content;
   const popup = adTemplate.querySelector('article');
   const templateClone = popup.cloneNode(true);

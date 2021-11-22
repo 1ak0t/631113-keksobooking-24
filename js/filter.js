@@ -29,16 +29,18 @@ function filterAny(value, typeFilter) {
   return typeFilter === value || typeFilter === 'any';
 }
 
-const isFilterFeatures = (features, filterFeatures) => features && filterFeatures.every((feature) => features.some((featureValue) => feature === featureValue));
+function isFilterFeatures(features, filterFeatures) {
+  return features && filterFeatures.every((feature) => features.some((featureValue) => feature === featureValue));
+}
 
-const filterData = (data) => {
+function filterData(data) {
   const type = housingType.value;
   const rooms = housingRooms.value;
   const guests = housingGuests.value;
   const price = housingPrice.value;
   const filteredData = [];
 
-  const getValueCheckboxFeatures = () => {
+  function getValueCheckboxFeatures() {
     const checkboxes = housingFeatures.querySelectorAll('.map__checkbox');
     const featuresValues = [];
     checkboxes.forEach((element) => {
@@ -47,7 +49,7 @@ const filterData = (data) => {
       }
     });
     return featuresValues;
-  };
+  }
 
   data.some((offer) => {
     if(filterAny(offer.offer.type, type)
@@ -61,13 +63,13 @@ const filterData = (data) => {
     return filteredData.length === MAX_NUMBER_OF_PINS;
   });
   makePin(filteredData);
-};
+}
 
-const setFilter = (cb) => {
+function setFilter(cb) {
   filterForm.addEventListener('change', () => {
     cb();
   });
-};
+}
 
 
 export {filterData, setFilter};
