@@ -6,6 +6,7 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_NIGHT_PRICE = 1000000;
 const MIN_TIMEOUT = 1;
+const MIN_PRICE = 1000;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MinPriceOfType = {
   bungalow: 0,
@@ -32,8 +33,8 @@ const adImgChoose = form.querySelector('#images');
 const adImgPreview = form.querySelector('.ad-form__photo');
 const adImgContainer = form.querySelector('.ad-form__photo-container');
 
-let minPrice = 1000;
-price.min = minPrice;
+let minPrice = MIN_PRICE;
+price.min = MIN_PRICE;
 
 function onTitleInput(evt) {
   if (evt.target.matches('input[name="title"]')) {
@@ -115,9 +116,9 @@ function resetFilterForm() {
 
 function resetForm() {
   form.reset();
-  minPrice = 1000;
+  minPrice = MIN_PRICE;
   price.placeholder = minPrice;
-  price.min = minPrice;
+  price.min = MIN_PRICE;
   setTimeout(() => address.value = `${MAP_CENTER_LAT} ${MAP_CENTER_LNG}`, MIN_TIMEOUT);
 }
 
