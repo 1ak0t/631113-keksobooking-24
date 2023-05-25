@@ -1,5 +1,5 @@
 function getData(onOk, onError) {
-  return fetch('https://24.javascript.pages.academy/keksobooking/data')
+  return fetch('https://28.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if(response.ok) {
         return response;
