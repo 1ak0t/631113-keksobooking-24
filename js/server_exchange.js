@@ -12,7 +12,7 @@ function getData(onOk, onError) {
 }
 
 function sendForm(formData, onOk, onError) {
-  return fetch('https://24.javascript.pages.academy/keksobooking',
+  return fetch('https://28.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
       body: formData,
